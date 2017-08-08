@@ -1,0 +1,1 @@
+web: java $JVM_OPTS -cp target/my-spiral-game.jar clojure.main -m my-spiral-game.server
