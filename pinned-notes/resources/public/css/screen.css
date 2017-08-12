@@ -1,31 +1,83 @@
-html,
-body {
-  display: flex;
+html, body {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  //background-color: #000000;
-  background-image: url("yellowpaperbg.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-}
-h2{
-  font-weight: bold;
-  color: #779933;
-}
-input{
-  margin: 1;
-  width: 200pt;
+  padding-top : 50px;
+  padding-right:0;
+  padding-left: 0;
 }
 
-form,
-div{
-  display: flex;
-  flex-direction: column;
-  width: 200pt;
+#custom-search-input{
+    display: flex;
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+    justify-content: flex-end;
+}
+.flex-endd{
+    display: flex;
+    justify-content: flex-end;
+}
+
+#custom-search-input input{
+    border: 0;
+    box-shadow: none;
+}
+
+#custom-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #666666;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+.white-color{
+    color: white;
+}
+
+.card{
+    width : 20rem;
+    margin: 10px;
+    box-shadow: 10px 10px 5px grey;
+    background-color: #ff6347;
+}
+
+input{
+    margin: 1px;
+}
+
+button{
+    display: flex;
+    justify-content: center;
+    position: absolute;
+}
+
+img{
+    position: top;
+}
+
+.flex-class{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.my-flex { display: flex; justify-content : space-between;}
+
+.options { display :flex; flex-direction: column; justify-content : space-between}
+
+
+nav{
+    top: 0;
+    position: fixed;
 }
 .navbar {
   margin-bottom: 10px;
@@ -42,7 +94,6 @@ div{
 .navbar-nav .nav-link + .nav-link {
   margin-left: 0;
 }
-
 @media (min-width: 34em) {
   .navbar-brand {
     float: left;
@@ -56,6 +107,7 @@ div{
     margin-left: 1rem;
   }
 }
+
 @-moz-keyframes three-quarters-loader {
     0% {
         -moz-transform: rotate(0deg);

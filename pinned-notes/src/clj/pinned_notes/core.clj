@@ -1,9 +1,9 @@
-(ns boots.core
-  (:require [boots.handler :as handler]
+(ns pinned-notes.core
+  (:require [pinned-notes.handler :as handler]
             [luminus.repl-server :as repl]
             [luminus.http-server :as http]
-            [boots.db.core :refer [db]]
-            [boots.config :refer [env]]
+            [pinned-notes.config :refer [env]]
+            [pinned-notes.db.core :refer [db]]
             [clojure.tools.cli :refer [parse-opts]]
             [clojure.tools.logging :as log]
             [mount.core :as mount])

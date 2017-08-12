@@ -26,7 +26,7 @@
 
 (defn update-task [task user]
   (mc/update db "to-do-list" {:task-name task :user user}
-             {$set {:status "done"}}))
+             {$set {:status "done"}} {:multi true}))
 
 (defn get-tasks [user]
   (mc/find-maps db "to-do-list" {:user user}))

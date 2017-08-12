@@ -1,6 +1,9 @@
 (ns string-manipulator.core
   (:require [reagent.core :as r]
-            [ajax.core :refer [GET POST]]))
+            [ajax.core :refer [GET POST]]
+            [secretary.core :as secretary :include-macros true]
+            [reagent.session :as session]
+            [accountant.core :as accountant]))
 
 (def server "http://localhost:3000/")
 
@@ -15,14 +18,15 @@
 (defn alert [msg]
   (js/alert msg))
 
-(def all-tasks (r/atom []))
+(def user (atom "rated"))
 
-(def page (r/atom {:page :login}))
+(def all-tasks (r/atom []))
 
 (defn show-output [params]
   (log "!!!!!" params)
   (reset! all-tasks params)
-  (log @all-tasks))
+  (log @all-tasks)
+  #_(secretary/dispatch! "/todo"))
 
 (defn error-output [params]
   (log "@@@ error" params))
@@ -30,12 +34,13 @@
 (defn show-hiccup []
   [:div
    (doall (for [i (range (count @all-tasks))]
-            ^{:key i} [:div [:input {:disabled true
+            ^{:key i} [:div
+                       [:input {:disabled true
                                      :id i
                                      :type "text"
                                      :value ((nth @all-tasks i) :task-name)}]
-                       [:p {:on-click (fn [e]
-                                        (log "^^^^" @user)
+                       [:button {:on-click (fn [e]
+                                        #_(log "^^^^" @user)
                                         (let [task ((nth @all-tasks i) :task-name)]
                                           (GET (str server "done-todo")
                                                {:params {:task-name task
@@ -44,10 +49,8 @@
                                                 :response-format :json
                                                 :keywords? true
                                                 :handler show-output
-                                                :error-handler error-output})))} "done"]
-                       [:p {:on-click #(swap! page assoc :page :update)} "update"]]))])
-
-(def user (atom "rated"))
+                                                :error-handler error-output}))) :class "btn btn-danger"} "done"]
+                       [:button {:on-click #(session/put! :page :update) :class "btn btn-primary"} "update"]]))])
 
 (defn home-page []
   [:div
@@ -64,9 +67,9 @@
                                 :keywords? true
                                 :handler show-output
                                 :error-handler error-output})))}
-    [:input {:type "text" :id "input-str" :placeholder "enter your task"}]
-    [:input {:type "submit" :value "Submit"}]
-    [:input {:type "button" :value "Logout" :on-click #(swap! page assoc :page :login )}]]
+    [:div [:input {:type "text" :id "input-str" :placeholder "enter your task"}]]
+    [:div [:input {:type "submit" :value "Submit" :class "btn btn-primary"}]]
+    [:div [:input {:type "button" :value "Logout" :on-click #(session/put! :page :login) :class "btn btn-primary"}]]]
    [:div [show-hiccup]]])
 
 
@@ -77,7 +80,7 @@
            :on-submit (fn [e]
                         (let [task-old (.-value (get-by-id "input-str1"))
                               task-upd (.-value (get-by-id "input-str2"))]
-                          (log "###" task "^^^^" @user)
+                          (log "###" task-old "^^^^" @user)
                           (GET (str server "upd-todo")
                                {:params {:task-name-old task-old
                                          :task-name-upd task-upd
@@ -87,17 +90,16 @@
                                 :keywords? true
                                 :handler show-output
                                 :error-handler error-output})))}
-
     [:input {:type "text" :id "input-str1" :placeholder "enter your old task"}]
     [:input {:type "text" :id "input-str2" :placeholder "enter your updated task"}]
-    [:input {:type "submit" :value "Update"}]]
+    [:input {:type "submit" :value "Update" :class "btn btn-primary"}]]
    [:div [show-hiccup]]])
 
 (defn show-login [params]
   (log "login: " params)
   (if (not= (count params) 1)
     (do
-      (swap! page assoc :page :login)
+      (session/put! :page :login)
       (alert "user name or password incorrect"))
     (do
       (reset! user (:user (first params)))
@@ -109,7 +111,7 @@
             :keywords? true
             :handler show-output
             :error-handler error-output})
-      (swap! page assoc :page :todo))))
+      (session/put! :page :home))))
 
 (defn error-login [params]
   (log "*** error" params))
@@ -130,11 +132,37 @@
                                 :keywords? true
                                 :handler show-login
                                 :error-handler error-login})))}
-    [:input {:type "text" :id "ip-user" :placeholder "enter user name"}]
-    [:input {:type "text" :id "ip-pass" :placeholder "enter password"}]
-    [:input {:type "submit" :value "Submit"}]]])
+    [:div [:input {:type "text" :id "ip-user" :placeholder "enter user name"}]]
+    [:div [:input {:type "text" :id "ip-pass" :placeholder "enter password"}]]
+    [:div [:input {:type "submit" :value "Submit" :class "btn btn-primary"}]]]])
 
-(defn show-page []
+(def pages
+  {:home #'home-page
+   :login #'login-page
+   :update #'update-page})
+
+(defn page []
+  (log (session/get :page))
+  [(pages (session/get :page))])
+
+;;--------------------------------
+
+;; Routes
+
+(secretary/set-config! :prefix "/?#")
+
+(secretary/defroute "/todo" []
+  (session/put! :page :home))
+
+(secretary/defroute "/" []
+  (session/put! :page :login))
+
+(secretary/defroute "/update" []
+  (session/put! :page :update))
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+#_(defn show-page []
   [:div.container
    (condp = (get @page :page)
        :login [login-page]
@@ -142,7 +170,16 @@
        :update [update-page])])
 
 (defn mount-components []
-  (r/render [show-page] (.getElementById js/document "app")))
+  (r/render [#'page] (.getElementById js/document "app")))
 
 (defn init! []
+  (session/put! :page :login)
+  (accountant/configure-navigation!
+   {:nav-handler
+    (fn [path]
+      (secretary/dispatch! path))
+    :path-exists?
+    (fn [path]
+      (secretary/locate-route path))})
+  (accountant/dispatch-current!)
   (mount-components))
