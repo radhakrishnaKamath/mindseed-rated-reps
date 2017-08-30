@@ -1,14 +1,12 @@
-(defproject string-manipulator "0.1.0-SNAPSHOT"
+(defproject demo-rated "0.1.0-SNAPSHOT"
 
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
 
   :dependencies [[clj-time "0.14.0"]
                  [cljs-ajax "0.6.0"]
-                 [com.google.guava/guava "20.0"]
-                 [com.novemberain/monger "3.1.0" :exclusions [com.google.guava/guava]]
                  [compojure "1.6.0"]
-                 [cprop "0.1.10"]
+                 [cprop "0.1.11"]
                  [funcool/struct "1.0.0"]
                  [luminus-immutant "0.2.3"]
                  [luminus-nrepl "0.1.4"]
@@ -31,11 +29,10 @@
                  [ring/ring-defaults "0.3.1"]
                  [secretary "1.2.3"]
                  [selmer "1.11.0"]
+                 [cljs-http "0.1.39"]
+                 [cljsjs/dragula "3.6.8-1"]
                  [reagent-material-ui "0.2.4"]
-                 [venantius/accountant "0.2.0"]
-                 [clojurewerkz/quartzite "2.0.0"]
-                 [org.clojure/data.csv "0.1.4"]
-                 [com.draines/postal "2.0.2"]]
+                 ]
 
   :min-lein-version "2.0.0"
 
@@ -44,7 +41,7 @@
   :test-paths ["test/clj"]
   :resource-paths ["resources" "target/cljsbuild"]
   :target-path "target/%s/"
-  :main ^:skip-aot string-manipulator.core
+  :main ^:skip-aot demo-rated.core
 
   :plugins [[lein-cprop "1.0.3"]
             [lein-cljsbuild "1.1.5"]
@@ -75,7 +72,7 @@
 
 
              :aot :all
-             :uberjar-name "string-manipulator.jar"
+             :uberjar-name "demo-rated.jar"
              :source-paths ["env/prod/clj"]
              :resource-paths ["env/prod/resources"]}
 
@@ -89,18 +86,18 @@
                                  [binaryage/devtools "0.9.4"]
                                  [com.cemerick/piggieback "0.2.2"]
                                  [doo "0.1.7"]
-                                 [figwheel-sidecar "0.5.11"]]
+                                 [figwheel-sidecar "0.5.12"]]
                   :plugins      [[com.jakemccrary/lein-test-refresh "0.19.0"]
                                  [lein-doo "0.1.7"]
-                                 [lein-figwheel "0.5.11"]
+                                 [lein-figwheel "0.5.12"]
                                  [org.clojure/clojurescript "1.9.854"]]
                   :cljsbuild
                   {:builds
                    {:app
                     {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
-                     :figwheel {:on-jsload "string-manipulator.core/mount-components"}
+                     :figwheel {:on-jsload "demo-rated.core/mount-components"}
                      :compiler
-                     {:main "string-manipulator.app"
+                     {:main "demo-rated.app"
                       :asset-path "/js/out"
                       :output-to "target/cljsbuild/public/js/app.js"
                       :output-dir "target/cljsbuild/public/js/out"
@@ -123,7 +120,7 @@
                     {:source-paths ["src/cljc" "src/cljs" "test/cljs"]
                      :compiler
                      {:output-to "target/test.js"
-                      :main "string-manipulator.doo-runner"
+                      :main "demo-rated.doo-runner"
                       :optimizations :whitespace
                       :pretty-print true}}}}
 

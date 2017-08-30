@@ -1,0 +1,1 @@
+web: java $JVM_OPTS -cp target/uberjar/demo-rated.jar clojure.main -m demo-rated.core
