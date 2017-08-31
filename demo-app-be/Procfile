@@ -1,0 +1,1 @@
+web: java $JVM_OPTS -cp target/uberjar/demo-app-be.jar clojure.main -m demo-app-be.core
