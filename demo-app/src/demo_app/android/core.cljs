@@ -25,21 +25,24 @@
 
 ;; Material design
 ;; ==================================================================
-(set! js/MaterialDesign (js/require "react-native-material-design"))
+(set! js/MaterialDesign (js/require "react-native-material-ui"))
 (def COLOR              (js->clj (.-COLOR js/MaterialDesign)   :keywordize-keys true))
+(def PRIMARY_COLORS    (vec (map keyword (js->clj (.-PRIMARY_COLORS js/MaterialDesign)))))
+(def ThemeProvider (r/adapt-react-class (.-ThemeProvider js/MaterialDesign)))
+(def uiTheme {:palette {:primaryColor (.-green500 COLOR) :accentColor (.-pink500 COLOR)}})
 
-(def card              (r/adapt-react-class (.-Card            js/MaterialDesign)))
-(def card-body         (r/adapt-react-class (.-Card.Body       js/MaterialDesign)))
-(def card-media        (r/adapt-react-class (.-Card.Media      js/MaterialDesign)))
-(def card-actions      (r/adapt-react-class (.-Card.Actions    js/MaterialDesign)))
+;;(def card              (r/adapt-react-class (.-Card            js/MaterialDesign)))
+;;(def card-body         (r/adapt-react-class (.-Card.Body       js/MaterialDesign)))
+;;(def card-media        (r/adapt-react-class (.-Card.Media      js/MaterialDesign)))
+;;(def card-actions      (r/adapt-react-class (.-Card.Actions    js/MaterialDesign)))
 
-(def avatar            (r/adapt-react-class (.-Avatar          js/MaterialDesign)))
+;;(def avatar            (r/adapt-react-class (.-Avatar          js/MaterialDesign)))
 
-(def button            (r/adapt-react-class (.-Button          js/MaterialDesign)))
-(def drawer-layout     (r/adapt-react-class (.-Drawer          js/MaterialDesign)))
-(def drawer-header     (r/adapt-react-class (.-Drawer.Header   js/MaterialDesign)))
-(def drawer-section    (r/adapt-react-class (.-Drawer.Section  js/MaterialDesign)))
-(def Toolbar           (r/adapt-react-class (.-Toolbar         js/MaterialDesign)))
+(def button              (r/adapt-react-class (.-Button          js/MaterialDesign)))
+;;(def drawer-layout     (r/adapt-react-class (.-Drawer          js/MaterialDesign)))
+;;(def drawer-header     (r/adapt-react-class (.-Drawer.Header   js/MaterialDesign)))
+;;(def drawer-section    (r/adapt-react-class (.-Drawer.Section  js/MaterialDesign)))
+;;(def Toolbar           (r/adapt-react-class (.-Toolbar         js/MaterialDesign)))
 
 (defonce fields (r/atom {:user nil :pwd nil}))
 
@@ -56,7 +59,7 @@
                   :text-align "center"}}
     "yash and dhiren are best friends"]
 
-   [card {:style {:background-color "red"}}
+  #_ [card {:style {:background-color "red"}}
     [card-body
      [text {:style {:font-weight "bold"
                     :font-size 16}}
@@ -77,10 +80,33 @@
 (defn app-pages []
   (let [greeting (subscribe [:get-greeting])]
     (fn []
-      [view {:style {:flex-direction "column"
-                     :margin 40
-                     :align-items "center"}}
-       #_[input {
+
+      [ThemeProvider {:uiTheme uiTheme}
+       [view {:style {:flex-direction "column"
+                      :margin 40
+                      :align-items "center"}}
+        [photo {:source {:uri "https://raw.githubusercontent.com/yoaicom/resources/master/images/game_of_thrones_1.jpg"}
+                :style {:width 300
+                        :height 300}}]
+        [button {:primary true
+                 :text "login"}]]])))
+
+
+#_(alert (str @fields))
+
+(defn app-root []
+  (let [current-page (subscribe [:get-page])]
+    (fn []
+      (condp = @current-page
+        :app-root [app-pages]
+        :app-next [app-next]))))
+
+(defn init []
+  (dispatch-sync [:initialize-db])
+  (.registerComponent app-registry "DemoApp" #(r/reactify-component app-root)))
+
+#_(.focus (get-ref page "password"))
+#_[input {
                     :ref                    "user"
                     :placeholder            "User name"
                     :placeholder-text-color "gray"
@@ -115,30 +141,3 @@
                                         ;:on-change-text  (fn [value] (swap! fields assoc :pwd value))
                                         ;:value           (:pwd @fields)
                    :style             {:width 200}} ]
-       [photo {:source {:uri "https://raw.githubusercontent.com/yoaicom/resources/master/images/game_of_thrones_1.jpg"}
-               :style {:width 500
-                       :height 500}}]
-       [touchable-highlight {:style {:background-color "#999"
-                                     :padding 10
-                                     :border-radius 5}
-                             :on-press #(dispatch [:login @fields])}
-        [text {:style {:color "white"
-                       :text-align "center"
-                       :font-weight "bold"}}
-         "login"]]])))
-
-
-#_(alert (str @fields))
-
-(defn app-root []
-  (let [current-page (subscribe [:get-page])]
-    (fn []
-      (condp = @current-page
-        :app-root [app-pages]
-        :app-next [app-next]))))
-
-(defn init []
-  (dispatch-sync [:initialize-db])
-  (.registerComponent app-registry "DemoApp" #(r/reactify-component app-root)))
-
-#_(.focus (get-ref page "password"))

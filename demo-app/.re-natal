@@ -6,9 +6,9 @@
     "prod": "env/prod"
   },
   "modules": [
-    "react-native-material-design",
     "react-native-vector-icons",
-    "react-native-transformable-image"
+    "react-native-transformable-image",
+    "react-native-material-ui"
   ],
   "imageDirs": [
     "images"
@@ -19,7 +19,7 @@
       "modules": []
     },
     "android": {
-      "host": "10.0.2.2",
+      "host": "localhost",
       "modules": []
     }
   }

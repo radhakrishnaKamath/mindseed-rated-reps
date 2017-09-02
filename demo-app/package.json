@@ -10,7 +10,6 @@
 		"babel-plugin-transform-es2015-block-scoping": "6.15.0",
 		"react": "16.0.0-alpha.12",
 		"react-native": "0.47.1",
-		"react-native-material-design": "^0.3.7",
 		"react-native-material-ui": "^1.13.0",
 		"react-native-photo-view": "^1.4.0",
 		"react-native-transformable-image": "0.0.18",
