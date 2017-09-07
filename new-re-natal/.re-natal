@@ -1,0 +1,29 @@
+{
+  "name": "NewReNatal",
+  "interface": "reagent6",
+  "envRoots": {
+    "dev": "env/dev",
+    "prod": "env/prod"
+  },
+  "modules": [
+    "react-native-video",
+    "react-native-video-player",
+    "react-native-vector-icons",
+    "react-native-audio-stream",
+    "react-native-share",
+    "react-native-fs"
+  ],
+  "imageDirs": [
+    "images"
+  ],
+  "platforms": {
+    "ios": {
+      "host": "localhost",
+      "modules": []
+    },
+    "android": {
+      "host": "localhost",
+      "modules": []
+    }
+  }
+}
