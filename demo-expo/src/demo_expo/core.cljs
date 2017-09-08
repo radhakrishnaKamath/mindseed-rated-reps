@@ -12,11 +12,11 @@
 
 #_(def vplayer (r/adapt-react-class (.-default vp)))
 
-(def v (js/require "react-native-video-player"))
+#_(def v (js/require "react-native-video-player"))
 
 #_(def vp (js/require "react-native-fullscreen-media-kit"))
 
-(def vplayer (r/adapt-react-class (.-default v)))
+#_(def vplayer (r/adapt-react-class (.-default v)))
 
 (def v-url "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4")
 
@@ -51,7 +51,7 @@
                                                    (clj->js {:dialogTitle "welcome"})) #_(show-video)}
         [text {:style {:color "white" :text-align "center" :font-weight "bold"}} "press"]]
 
-       [vplayer {:video {:uri v-url}
+       #_[vplayer {:video {:uri v-url}
                  :autoplay false
                  :loop false
                  :muted false
