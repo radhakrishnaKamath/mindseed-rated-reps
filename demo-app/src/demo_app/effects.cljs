@@ -6,7 +6,7 @@
 (def baseurl "https://reqres.in/api")
 
 (def url_map
-  {:sign-in "login"
+  {:sign-in "users?page=2"
    :messages "messages"
    :signout "auth/signout"})
 
@@ -81,8 +81,7 @@
   On succesful request return object that contains user data and autehtication cookie."
   (let [fetch (if (nil? fetch-fn) fetch-json fetch-fn)]
     (fetch
-     :method "POST"
+     :method "GET"
      :endpoint :sign-in
-     :body user
      :on-success on-success
      :on-error   on-error)))

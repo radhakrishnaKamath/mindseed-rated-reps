@@ -1,0 +1,12 @@
+var DummyClass={};
+DummyClass.FileSystem=function(){};
+DummyClass.Share=function(){};
+DummyClass.Video=function(){};
+DummyClass.alert=function(){};
+DummyClass.catch=function(){};
+DummyClass.default=function(){};
+DummyClass.downloadAsync=function(){};
+DummyClass.push=function(){};
+DummyClass.registerComponent=function(){};
+DummyClass.share=function(){};
+DummyClass.then=function(){};

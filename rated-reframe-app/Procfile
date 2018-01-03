@@ -1,0 +1,1 @@
+web: java $JVM_OPTS -cp target/uberjar/rated-reframe-app.jar clojure.main -m rated-reframe-app.core

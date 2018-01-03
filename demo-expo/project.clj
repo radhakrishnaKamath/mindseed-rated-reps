@@ -39,6 +39,6 @@
                                                          :static-fns    true
                                                          :externs       ["js/externs.js"]
                                                          :parallel-build     true
-                                                         :optimize-constants true
-                                                         :optimizations :advanced
+                                                         :optimize-constants false
+                                                         :optimizations :none
                                                          :closure-defines {"goog.DEBUG" false}}}]}}})

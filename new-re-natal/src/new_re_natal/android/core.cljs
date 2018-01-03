@@ -12,6 +12,8 @@
 (def image (r/adapt-react-class (.-Image ReactNative)))
 (def touchable-highlight (r/adapt-react-class (.-TouchableHighlight ReactNative)))
 
+(def p (js/require "react-native-transformable-image"))
+(def photo (r/adapt-react-class (.-default p)))
 
 (def logo-img (js/require "./images/cljs.png"))
 
@@ -27,13 +29,13 @@
 
 (def m-url "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
 
-(def rnsl (js/require "react-native-share"))
+#_(def rnsl (js/require "react-native-share"))
 
-(def ss (.-shareSingle rnsl))
+#_(def ss (.-shareSingle rnsl))
 
-(def rnfs (js/require "react-native-fs"))
+#_(def rnfs (js/require "react-native-fs"))
 
-(def download-file (.-downloadFile rnfs))
+#_(def download-file (.-downloadFile rnfs))
 
 (defn alert [title]
   (.alert (.-Alert ReactNative) title))
@@ -71,11 +73,15 @@
        [image {:source logo-img
                :style  {:width 80 :height 80 :margin-bottom 30}}]
        [touchable-highlight {:style {:background-color "#999" :padding 10 :border-radius 5}
-                             :on-press #(download-share)}
+                             :on-press #(alert "hiii")}
         [text {:style {:color "white" :text-align "center" :font-weight "bold"}} "press me"]]
 
-       #_[view {:height 100}]
-       #_[player {:url m-url}]])))
+       [photo {:source {:uri "https://raw.githubusercontent.com/yoaicom/resources/master/images/game_of_thrones_1.jpg"}
+               :style {:width 300
+                       :height 300}}]
+
+       [view {:height 100}]
+       [player {:url m-url}]])))
 
 (defn init []
       (dispatch-sync [:initialize-db])

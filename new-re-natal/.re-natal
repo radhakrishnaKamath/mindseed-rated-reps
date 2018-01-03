@@ -11,7 +11,8 @@
     "react-native-vector-icons",
     "react-native-audio-stream",
     "react-native-share",
-    "react-native-fs"
+    "react-native-fs",
+    "react-native-transformable-image"
   ],
   "imageDirs": [
     "images"

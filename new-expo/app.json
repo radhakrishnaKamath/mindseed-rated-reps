@@ -1,31 +1,34 @@
 {
-  "expo": {
-    "name": "new-expo",
-    "description": "No description",
-    "slug": "new-expo",
-    "sdkVersion": "20.0.0",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "primaryColor": "#cccccc",
-    "privacy": "public",
-    "icon": "./assets/icons/app.png",
-    "notification": {
-      "icon": "./assets/icons/loading.png",
-      "color": "#000000"
-    },
-    "loading": {
-      "icon": "https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png",
-      "hideExponentText": false
-    },
-    "packagerOpts": {
-      "assetExts": [
-        "ttf",
-        "otf"
-      ],
-      "nonPersistent": ""
-    },
-    "ios": {
-      "supportsTablet": true
+    "expo": {
+        "name": "new-expo",
+        "description": "No description",
+        "slug": "new-expo",
+        "sdkVersion": "20.0.0",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "primaryColor": "#cccccc",
+        "privacy": "public",
+        "icon": "./assets/icons/app.png",
+        "notification": {
+            "icon": "./assets/icons/loading.png",
+            "color": "#000000"
+        },
+        "loading": {
+            "icon": "https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png",
+            "hideExponentText": false
+        },
+        "packagerOpts": {
+            "assetExts": [
+                "ttf",
+                "otf"
+            ],
+            "nonPersistent": ""
+        },
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "permissions": ["CAMERA", "NOTIFICATIONS", "BLUETOOTH", "READ_PHONE_STATE"]
+        }
     }
-  }
 }

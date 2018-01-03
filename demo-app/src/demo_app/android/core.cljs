@@ -89,7 +89,8 @@
                 :style {:width 300
                         :height 300}}]
         [button {:primary true
-                 :text "login"}]]])))
+                 :text "login"
+                 :on-press #(dispatch [:login fields])}]]])))
 
 
 #_(alert (str @fields))

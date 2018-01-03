@@ -6,36 +6,29 @@
               [cljs-exponent.reagent :refer [text view image touchable-highlight] :as rn]
               [cljs-exponent.components :as components]))
 
-#_(def v (js/require  "expo"))
+(def expo (js/require  "expo"))
 
-#_(def vp (js/require "abi-expo-videoplayer"))
+(def expo-player (js/require "@expo/videoplayer"))
 
-#_(def vplayer (r/adapt-react-class (.-default vp)))
+(def video (r/adapt-react-class (.-Video expo)))
 
-#_(def v (js/require "react-native-video-player"))
+(def video-player (r/adapt-react-class (.-default expo-player)))
 
-#_(def vp (js/require "react-native-fullscreen-media-kit"))
+(def fs (.-FileSystem expo))
 
-#_(def vplayer (r/adapt-react-class (.-default v)))
+
 
 (def v-url "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4")
 
 (def url (clj->js "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"))
 
-#_(defn pause []
-  (.pause RNAS))
-
-#_(defn setUrl []
-  (.setUrl RNAS url))
-
-#_(defn stop []
-  (.stop reactNativeAudioStreaming))
-
-#_(defn play []
-  (.play RNAS))
-
 (defn alert [title]
   (.alert rn/alert title))
+
+(defn download-async [url local-uri]
+  (->(.downloadAsync fs url local-uri)
+     (.then (fn [uri] (println ((js->clj uri) "uri"))))
+     (.catch (fn [error] (println (str "error: " error))))))
 
 (defn my-share [content opts]
   (.share (.-Share (js/require "react-native")) content opts))
@@ -48,14 +41,28 @@
                              :on-press #(my-share (clj->js {:message "https%3A%2F%2Ffarm5.staticflickr.com%2F4434%2F36582664612_bab0916d27_b.jpg"
                                                             :title "message"
                                                             :url "dbcskdbchsdb"})
-                                                   (clj->js {:dialogTitle "welcome"})) #_(show-video)}
-        [text {:style {:color "white" :text-align "center" :font-weight "bold"}} "press"]]
+                                                  (clj->js {:dialogTitle "welcome"})) #_(show-video)}
+        [text {:style {:color "white" :text-align "center" :font-weight "bold"}} "share"]]
 
-       #_[vplayer {:video {:uri v-url}
-                 :autoplay false
-                 :loop false
-                 :muted false
-                 :thumbnail "http://static.yoaicdn.com/shoppc/images/cover_img_e1e9e6b.jpg"}]
+       [image {:source {:uri "https://facebook.github.io/react/img/logo_og.png"}
+               :style {:width 200
+                       :height 200}}
+        [image {:source {:uri "https://facebook.github.io/react/img/logo_og.png"}
+                :style {:width 20
+                        :height 20}
+                :zIndex 2
+                :margin 90}]]
+
+       #_[touchable-highlight {:style {:background-color "#999" :padding 10 :border-radius 5}
+                             :on-press #(download-async v-url (str (.-documentDirectory fs) "bunny.mp4") (clj->js {:md5 false}))}
+        [text {:style {:color "white" :text-align "center" :font-weight "bold"}} "download"]]
+
+       [video-player {:videoProps {:source {:uri v-url}}
+                      :isPortrait true
+                      :shouldPlay false
+                      :resizeMode "cover"
+                      :playFromPositionMillis 0}
+        ]
 
        #_[components/video {:source (js/require "./assets/images/tx.mp4")
                             :rate 1.0
